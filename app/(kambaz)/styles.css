@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (min-width: 768px) {
+  #wd-kambaz .wd-main-content-offset {
+    padding-left: 130px !important;
+  }
+  #wd-dashboard {
+    padding-left: 20px;
+  }
+}
+
+.list-group.wd > .list-group-item.active {
+  color: black;
+  background: none;
+  border-left: 2px solid black !important;
+}
+
+.btn-secondary {
+  --bs-btn-color: #000 !important;
+  --bs-btn-bg: #c7cdd1 !important;
+  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-hover-color: #fff !important;
+}
+
+.dropdown-toggle.btn.btn-secondary {
+  background: #c7cdd1 !important;
+  border-color: #c7cdd1 !important;
+  color: #000 !important;
+}
+
+.dropdown-toggle.btn.btn-secondary:hover {
+  background: #5c636a !important;
+  border-color: #565e64 !important;
+  color: #fff !important;
+}
+
+.bg-secondary {
+  --bs-secondary-rgb: 199, 205, 209;
+}
+.list-group-item {
+  --bs-list-group-border-color: gray;
+}
+.wd-lesson {
+  border-left: 2px solid green !important;
+}
+
+.wd-assignment {
+  border-left: 2px solid green !important;
+}
+
+.dropdown-toggle {
+  background: transparent !important;
+  border: none !important;
+}

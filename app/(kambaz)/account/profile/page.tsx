@@ -1,40 +1,69 @@
 import Link from "next/link";
+import {
+  FormControl,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+} from "react-bootstrap";
+
 export default function Profile() {
   return (
-    <div id="wd-profile-screen">
-      <h3>Profile</h3>
-      <input
-        defaultValue="alice"
+    <div id="wd-signin-screen">
+      <h1>Profile</h1>
+      <FormControl
+        id="wd-username"
         placeholder="username"
+        defaultValue="alice"
         className="wd-username"
       />
       <br />
-      <input
-        defaultValue="123"
+      <FormControl
+        id="wd-password"
         placeholder="password"
         type="password"
-        className="wd-password"
+        defaultValue="123"
       />
       <br />
-      <input defaultValue="Alice" placeholder="First Name" id="wd-firstname" />
+      <FormControl
+        defaultValue="Alice"
+        placeholder="First Name"
+        id="wd-firstname"
+      />
       <br />
-      <input
+      <FormControl
         defaultValue="Wonderland"
         placeholder="Last Name"
         id="wd-lastname"
       />
       <br />
-      <input defaultValue="2000-01-01" type="date" id="wd-dob" />
+      <FormControl defaultValue="2000-01-01" type="date" id="wd-dob" />
       <br />
-      <input defaultValue="alice@wonderland" type="email" id="wd-email" />
+      <FormControl defaultValue="alice@wonderland" type="email" id="wd-email" />
       <br />
-      <select defaultValue="FACULTY" id="wd-role">
-        <option value="USER">User</option> <option value="ADMIN">Admin</option>
-        <option value="FACULTY">Faculty</option>{" "}
-        <option value="STUDENT">Student</option>
-      </select>
+      <Dropdown className="form-control">
+        <DropdownToggle
+          className="w-100 fs-6 p-0 d-flex align-start align-items-center justify-content-between"
+          variant="tertiary"
+          size="lg"
+          id="wd-publish-all-btn"
+        >
+          User
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem id="wd-profile-user">User</DropdownItem>
+          <DropdownItem id="wd-profile-faculty">Faculty</DropdownItem>
+          <DropdownItem id="wd-profile-student">Student</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <br />
-      <Link href="signin"> Sign out </Link>
+      <Link
+        id="wd-signout-btn"
+        href="/account/profile"
+        className="btn btn-danger w-100 mb-2"
+      >
+        Sign Out
+      </Link>
     </div>
   );
 }

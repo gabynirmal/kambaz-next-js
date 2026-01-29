@@ -1,84 +1,58 @@
+import ModulesControls from "./ModulesControls";
+import ModuleControlButtons from "./ModuleControlButtons";
+import LessonControlButtons from "./LessonControlButtons";
+
+import { BsGripVertical } from "react-icons/bs";
+import { IoCaretDownOutline } from "react-icons/io5";
+
+import { ListGroup } from "react-bootstrap";
+import { ListGroupItem } from "react-bootstrap";
 export default function Modules() {
   return (
     <div>
-      <div className="wd-module-buttons">
-        <button>Collapse All</button>
-        <button>View Progress</button>
-        <select id="wd-publish-select" defaultValue="Publish All">
-          <option value="Publish All">Publish All</option>
-          <option value="Week 1">Week 1</option>
-          <option value="Week 2">Week 2</option>
-          <option value="Week 3">Week 3</option>
-        </select>
-        <button>+ Module</button>
-      </div>
-      <ul id="wd-modules">
-        <li className="wd-module">
-          <div className="wd-title">Week 1, Lecture 1</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Introduction to the course</li>
-                <li className="wd-content-item">
-                  Learn what is Web Development
-                </li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">READING</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">
-                  Full Stack Developer - Chapter 1 - Introduction
-                </li>
-                <li className="wd-content-item">
-                  Full Stack Developer - Chapter 2 - Creating User
-                </li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">
-                  Introduction to Web Development
-                </li>
-                <li className="wd-content-item">
-                  Creating an HTTP Server with Node.js
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li className="wd-module">
-          <div className="wd-title">Week 1, Lecture 2</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">
-                  Learn how to create user interfaces with HTML
-                </li>
-                <li className="wd-content-item">
-                  Deploy the assignment to Vercel
-                </li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Intro to HTML and DOM</li>
-                <li className="wd-content-item">Formatting Web Content</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li className="wd-module">
-          <div className="wd-title">Week 2</div>
-        </li>
-        <li className="wd-module">
-          <div className="wd-title">Week 3</div>
-        </li>
-      </ul>
+      <ModulesControls />
+      <ListGroup className="rounded-0 py-5" id="wd-modules">
+        <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-3 bg-secondary">
+            <BsGripVertical className="me-2 fs-3" />
+            <IoCaretDownOutline className="me-2 fs-5" />
+            Week 1 <ModuleControlButtons />
+          </div>
+          <ListGroup className="wd-lessons rounded-0">
+            <ListGroupItem className="wd-lesson p-3">
+              <BsGripVertical className="me-2 fs-3" />
+              LEARNING OBJECTIVES <LessonControlButtons />
+            </ListGroupItem>
+            <ListGroupItem className="wd-lesson p-3">
+              <BsGripVertical className="me-2 fs-3" />
+              Introduction to the course <LessonControlButtons />
+            </ListGroupItem>
+            <ListGroupItem className="wd-lesson p-3">
+              <BsGripVertical className="me-2 fs-3" />
+              Learn what is Web Development <LessonControlButtons />
+            </ListGroupItem>
+          </ListGroup>
+        </ListGroupItem>
+        <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-3 bg-secondary">
+            {" "}
+            <BsGripVertical className="me-2 fs-3" />
+            <IoCaretDownOutline className="me-2 fs-5" />
+            Week 2
+            <ModuleControlButtons />{" "}
+          </div>
+          <ListGroup className="wd-lessons rounded-0">
+            <ListGroupItem className="wd-lesson p-3">
+              <BsGripVertical className="me-2 fs-3" /> LESSON 1{" "}
+              <LessonControlButtons />
+            </ListGroupItem>
+            <ListGroupItem className="wd-lesson p-3">
+              <BsGripVertical className="me-2 fs-3" /> LESSON 2{" "}
+              <LessonControlButtons />
+            </ListGroupItem>
+          </ListGroup>
+        </ListGroupItem>
+      </ListGroup>
     </div>
   );
 }

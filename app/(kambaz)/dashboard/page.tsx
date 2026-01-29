@@ -1,122 +1,231 @@
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import CardImg from "react-bootstrap/CardImg";
+import CardTitle from "react-bootstrap/CardTitle";
+import CardBody from "react-bootstrap/CardBody";
+import CardText from "react-bootstrap/CardText";
+import Button from "react-bootstrap/Button";
 import Link from "next/link";
-import Image from "next/image";
+
 export default function Dashboard() {
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       <h2 id="wd-dashboard-published">Published Courses (12)</h2> <hr />
       <div id="wd-dashboard-courses">
-        <div className="wd-dashboard-course">
-          <Link href="/courses/1111" className="wd-dashboard-course-link">
-            <Image
-              src="/images/bio1111-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="biology"
-            />
-            <div>
-              <h5> BIO1111 Biology </h5>
-              <p className="wd-dashboard-course-title">Intro to Biology</p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/1112" className="wd-dashboard-course-link">
-            <Image
-              src="/images/bio1112-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> BIO1112 Bio Lab </h5>
-              <p className="wd-dashboard-course-title">
-                Lab for Intro to Biology
-              </p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/3800" className="wd-dashboard-course-link">
-            <Image
-              src="/images/cs3800-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> CS3800 TOC </h5>
-              <p className="wd-dashboard-course-title">Theory of Computation</p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/4550" className="wd-dashboard-course-link">
-            <Image
-              src="/images/cs4550-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> CS4550 Web Dev </h5>
-              <p className="wd-dashboard-course-title">Web Development</p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/4420" className="wd-dashboard-course-link">
-            <Image
-              src="/images/ds4420-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> DS4420 ML2 </h5>
-              <p className="wd-dashboard-course-title">
-                Machine Learning & Data Mining 2
-              </p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/1012" className="wd-dashboard-course-link">
-            <Image
-              src="/images/gbst1012-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> GBST 1012 Global Studies </h5>
-              <p className="wd-dashboard-course-title">
-                Global Learning Experience
-              </p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course">
-          <Link href="/courses/1800" className="wd-dashboard-course-link">
-            <Image
-              src="/images/cs1800-dashboard-image.jpg"
-              width={200}
-              height={150}
-              alt="reactjs"
-            />
-            <div>
-              <h5> CS1800 Discrete </h5>
-              <p className="wd-dashboard-course-title">Discrete Structures</p>
-              <button> Go </button>
-            </div>
-          </Link>
-        </div>
+        <Row xs={1} md={5} className="g-4">
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/1111/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/bio1111-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    BIO1111 Bio
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Intro to Biology
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/1112/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/bio1112-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    BIO1112 Bio Lab
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Lab for Intro to Biology
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/3800/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/cs3800-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    CS3800 TOC
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Theory of Computation
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/4550/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/cs4550-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    CS4550 Web Dev
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Web Development
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/4420/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/ds4420-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    DS4420 ML2
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Machine Learning & Data Mining 2
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/1012/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/gbst1012-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    GBST 1012 Global Studies
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Global Learning Experience
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+          <Col className="wd-dashboard-course" style={{ width: "350px" }}>
+            <Card
+              className="border border-0"
+              style={{ boxShadow: "0 2px 5px rgba(0, 0, 0, .3)" }}
+            >
+              <Link
+                href="/courses/1800/home"
+                className="wd-dashboard-course-link text-decoration-none text-dark"
+              >
+                <CardImg
+                  variant="top"
+                  src="/images/cs1800-dashboard-image.jpg"
+                  width="100%"
+                  height={200}
+                />
+                <CardBody>
+                  <CardTitle className="wd-dashboard-course-title text-truncate">
+                    CS1800 Discrete
+                  </CardTitle>
+                  <CardText
+                    className="wd-dashboard-course-description text-truncate"
+                    style={{ height: "25px" }}
+                  >
+                    Discrete Structures
+                  </CardText>
+                  <Button variant="primary">Go</Button>
+                </CardBody>
+              </Link>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </div>
   );
