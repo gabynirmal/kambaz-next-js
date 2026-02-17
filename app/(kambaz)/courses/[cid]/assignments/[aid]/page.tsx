@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Form,
   FormControl,
@@ -9,18 +11,28 @@ import {
   DropdownMenu,
   Row,
   Col,
+  Button,
 } from "react-bootstrap";
+import * as db from "../../../../database";
+import { useParams, useRouter } from "next/navigation";
 
 export default function AssignmentEditor() {
+  const { aid, cid } = useParams();
+  const router = useRouter();
+  const assignments = db.assignments;
+  const assignment = assignments.find((assignment) => assignment._id === aid);
   return (
-    <Form id="wd-assignments-editor" className="d-flex flex-column gap-4 pt-2">
+    <Form
+      id="wd-assignments-editor"
+      className="d-flex flex-column gap-4 pt-2 ps-5"
+    >
       {/* Assignment Name */}
       <div>
         <FormLabel htmlFor="wd-assignment-name">Assignment Name</FormLabel>
         <FormControl
           id="wd-assignment-name"
           type="text"
-          defaultValue="A1 - ENV + HTML"
+          defaultValue={assignment?.title}
         ></FormControl>
       </div>
 
@@ -29,7 +41,7 @@ export default function AssignmentEditor() {
         as="textarea"
         id="assignment-description"
         style={{ height: 200 }}
-        defaultValue="The assignment is available online Submit a link to the landing page of your web application"
+        defaultValue={assignment?.description}
       ></FormControl>
 
       <div className="d-flex flex-column gap-4 align-items-end">
@@ -39,7 +51,7 @@ export default function AssignmentEditor() {
           <FormControl
             id="wd-assignment-points"
             type="number"
-            defaultValue="100"
+            defaultValue={assignment?.points}
             style={{ width: 1000 }}
           ></FormControl>
         </div>
@@ -56,7 +68,7 @@ export default function AssignmentEditor() {
             style={{ width: 1000 }}
           >
             <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-              ASSIGNMENTS
+              {assignment?.assignmentGroup}
             </DropdownToggle>
             <DropdownMenu className="w-100">
               <DropdownItem>ASSIGNMENTS</DropdownItem>
@@ -80,7 +92,7 @@ export default function AssignmentEditor() {
             style={{ width: 1000 }}
           >
             <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-              Percentage
+              {assignment?.displayGradeAs}
             </DropdownToggle>
             <DropdownMenu className="w-100">
               <DropdownItem>Percentage</DropdownItem>
@@ -106,7 +118,7 @@ export default function AssignmentEditor() {
               className="rounded border-1 border border-gray w-100 "
             >
               <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-                Online
+                {assignment?.submissionType}
               </DropdownToggle>
               <DropdownMenu className="w-100">
                 <DropdownItem>Online</DropdownItem>
@@ -160,7 +172,7 @@ export default function AssignmentEditor() {
             <FormControl
               id="wd-assignment-assign-to"
               type="text"
-              defaultValue="Everyone"
+              defaultValue={assignment?.assignTo}
             />
             <FormLabel
               htmlFor="wd-assignment-due-date"
@@ -171,7 +183,7 @@ export default function AssignmentEditor() {
             <FormControl
               id="wd-assignment-due-date"
               type="datetime-local"
-              defaultValue="2024-05-13T23:59"
+              defaultValue={assignment?.due}
             />
             <Row>
               <Col>
@@ -196,17 +208,40 @@ export default function AssignmentEditor() {
                 <FormControl
                   id="wd-assignment-available-from-date"
                   type="datetime-local"
-                  defaultValue="2024-05-13T00:01"
+                  defaultValue={assignment?.not_available_until}
                 />
               </Col>
               <Col>
                 <FormControl
                   id="wd-assignment-available-until-date"
                   type="datetime-local"
-                  defaultValue="2024-05-13T23:59"
+                  defaultValue={assignment?.due}
                 />
               </Col>
             </Row>
+          </div>
+        </div>
+
+        {/*Cancel and Save Buttons*/}
+        <div className="d-flex flex-column w-100">
+          <hr />
+          <div className="d-flex justify-content-end">
+            <Button
+              variant="secondary"
+              size="lg"
+              id="wd-assignment-editor-cancel"
+              onClick={() => router.push(`/courses/${cid}/assignments`)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="btn btn-danger ms-2"
+              size="lg"
+              id="wd-assignment-editor-cancel"
+              onClick={() => router.push(`/courses/${cid}/assignments`)}
+            >
+              Save
+            </Button>
           </div>
         </div>
       </div>

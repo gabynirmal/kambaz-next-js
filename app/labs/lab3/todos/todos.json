@@ -1,0 +1,10 @@
+[
+  { "title": "Buy milk", "status": "CANCELED", "done": true, "key": "1" },
+  {
+    "title": "Pickup the kids",
+    "status": "IN PROGRESS",
+    "done": false,
+    "key": "2"
+  },
+  { "title": "Walk the dog", "status": "DEFERRED", "done": false, "key": "3" }
+]

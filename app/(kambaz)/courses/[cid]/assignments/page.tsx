@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   FormControl,
@@ -6,6 +7,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "react-bootstrap";
+import { useParams } from "next/navigation";
 
 import { SlMagnifier } from "react-icons/sl";
 import { BsGripVertical } from "react-icons/bs";
@@ -14,7 +16,11 @@ import { IoCaretDownOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import LessonControlButtons from "../modules/LessonControlButtons";
 
+import * as db from "../../../database";
+
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
   return (
     <div id="wd-assignments">
       <div className="pb-2 d-flex gap-5 align-items-center">
@@ -42,7 +48,6 @@ export default function Assignments() {
           </Button>
         </div>
       </div>
-
       <ListGroup className="rounded-0 py-5 " id="wd-assignments">
         <ListGroupItem className="wd-assignment-title p-0 mb-5 fs-5 ">
           <div className="wd-title p-3 ps-3 bg-secondary border border-secondary">
@@ -50,49 +55,52 @@ export default function Assignments() {
             <IoCaretDownOutline className="me-2 fs-5" />
             ASSIGNMENTS
           </div>
-          <ListGroup className="wd-assignments rounded-0">
-            <ListGroupItem className="wd-assignment d-flex flex-row align-items-center">
-              <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
-              <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
-              <div className="d-flex flex-column">
-                <Link className="text-dark" href="/courses/1111/assignments/1">
-                  A1
-                </Link>
-                <span className="fs-6">
-                  <span className="text-danger">Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> May 6 at 12:00am |{" "}
-                  <strong>Due</strong> May 13 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
-            <ListGroupItem className="wd-assignment d-flex flex-row align-items-center">
-              <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
-              <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
-              <div className="d-flex flex-column">
-                A2
-                <span className="fs-6">
-                  <span className="text-danger">Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> May 13 at 12:00am |{" "}
-                  <strong>Due</strong> May 20 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
-            <ListGroupItem className="wd-assignment d-flex flex-row align-items-center">
-              <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
-              <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
-              <div className="d-flex flex-column">
-                A3
-                <span className="fs-6">
-                  <span className="text-danger">Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> May 20 at 12:00am |{" "}
-                  <strong>Due</strong> May 27 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
-          </ListGroup>
+          {assignments && (
+            <ListGroup className="wd-assignments rounded-0">
+              {assignments
+                .filter((assignment: any) => assignment.course === cid)
+                .map((assignment: any) => (
+                  <ListGroupItem
+                    className="wd-assignment d-flex flex-row align-items-center"
+                    key={assignment._id}
+                  >
+                    <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
+                    <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
+                    <div className="d-flex flex-column">
+                      <Link
+                        className="text-dark"
+                        href={`/courses/${cid}/assignments/${assignment._id}`}
+                      >
+                        {assignment.title}
+                      </Link>
+                      {(() => {
+                        const dueDate = new Date(assignment.due);
+                        // Formatters for "May 27" and "11:59 PM"
+                        const dateStr = dueDate.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                        });
+                        const timeStr = dueDate.toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "2-digit",
+                        });
+
+                        return (
+                          <span className="fs-6">
+                            <span className="text-danger">
+                              Multiple Modules
+                            </span>{" "}
+                            | <strong>Due</strong> {dateStr} at {timeStr} |{" "}
+                            {assignment.points} pts
+                          </span>
+                        );
+                      })()}
+                    </div>
+                    <LessonControlButtons />
+                  </ListGroupItem>
+                ))}
+            </ListGroup>
+          )}
         </ListGroupItem>
       </ListGroup>
     </div>
