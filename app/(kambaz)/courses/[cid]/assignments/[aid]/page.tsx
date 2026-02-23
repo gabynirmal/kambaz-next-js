@@ -13,14 +13,32 @@ import {
   Col,
   Button,
 } from "react-bootstrap";
-import * as db from "../../../../database";
 import { useParams, useRouter } from "next/navigation";
+import { addAssignment, updateAssignment } from "../reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../../store";
+import { useState } from "react";
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
   const router = useRouter();
-  const assignments = db.assignments;
-  const assignment = assignments.find((assignment) => assignment._id === aid);
+  const { assignments } = useSelector(
+    (state: RootState) => state.assignmentsReducer,
+  );
+  const dispatch = useDispatch();
+  const existingAssignment = assignments.find((a: any) => a._id === aid);
+  const [assignment, setAssignment] = useState(
+    existingAssignment || {
+      _id: aid,
+      title: "New Assignment",
+      description: "",
+      points: 100,
+      due: "",
+      not_available_until: "",
+      course: cid,
+    },
+  );
+
   return (
     <Form
       id="wd-assignments-editor"
@@ -32,7 +50,10 @@ export default function AssignmentEditor() {
         <FormControl
           id="wd-assignment-name"
           type="text"
-          defaultValue={assignment?.title}
+          value={assignment?.title}
+          onChange={(e) =>
+            setAssignment({ ...assignment, title: e.target.value })
+          }
         ></FormControl>
       </div>
 
@@ -41,7 +62,10 @@ export default function AssignmentEditor() {
         as="textarea"
         id="assignment-description"
         style={{ height: 200 }}
-        defaultValue={assignment?.description}
+        value={assignment?.description}
+        onChange={(e) =>
+          setAssignment({ ...assignment, description: e.target.value })
+        }
       ></FormControl>
 
       <div className="d-flex flex-column gap-4 align-items-end">
@@ -51,8 +75,11 @@ export default function AssignmentEditor() {
           <FormControl
             id="wd-assignment-points"
             type="number"
-            defaultValue={assignment?.points}
+            value={assignment?.points}
             style={{ width: 1000 }}
+            onChange={(e) =>
+              setAssignment({ ...assignment, points: parseInt(e.target.value) })
+            }
           ></FormControl>
         </div>
 
@@ -68,7 +95,7 @@ export default function AssignmentEditor() {
             style={{ width: 1000 }}
           >
             <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-              {assignment?.assignmentGroup}
+              ASSIGNMENTS
             </DropdownToggle>
             <DropdownMenu className="w-100">
               <DropdownItem>ASSIGNMENTS</DropdownItem>
@@ -92,7 +119,7 @@ export default function AssignmentEditor() {
             style={{ width: 1000 }}
           >
             <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-              {assignment?.displayGradeAs}
+              Percentage
             </DropdownToggle>
             <DropdownMenu className="w-100">
               <DropdownItem>Percentage</DropdownItem>
@@ -118,7 +145,7 @@ export default function AssignmentEditor() {
               className="rounded border-1 border border-gray w-100 "
             >
               <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-                {assignment?.submissionType}
+                Online
               </DropdownToggle>
               <DropdownMenu className="w-100">
                 <DropdownItem>Online</DropdownItem>
@@ -169,11 +196,7 @@ export default function AssignmentEditor() {
             >
               <span className="fs-5">Assign To</span>
             </FormLabel>
-            <FormControl
-              id="wd-assignment-assign-to"
-              type="text"
-              defaultValue={assignment?.assignTo}
-            />
+            <FormControl id="wd-assignment-assign-to" type="text" />
             <FormLabel
               htmlFor="wd-assignment-due-date"
               className="text-nowrap pt-2"
@@ -183,7 +206,10 @@ export default function AssignmentEditor() {
             <FormControl
               id="wd-assignment-due-date"
               type="datetime-local"
-              defaultValue={assignment?.due}
+              value={assignment?.due}
+              onChange={(e) =>
+                setAssignment({ ...assignment, due: e.target.value })
+              }
             />
             <Row>
               <Col>
@@ -208,7 +234,13 @@ export default function AssignmentEditor() {
                 <FormControl
                   id="wd-assignment-available-from-date"
                   type="datetime-local"
-                  defaultValue={assignment?.not_available_until}
+                  value={assignment?.not_available_until}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      not_available_until: e.target.value,
+                    })
+                  }
                 />
               </Col>
               <Col>
@@ -238,7 +270,14 @@ export default function AssignmentEditor() {
               className="btn btn-danger ms-2"
               size="lg"
               id="wd-assignment-editor-cancel"
-              onClick={() => router.push(`/courses/${cid}/assignments`)}
+              onClick={() => {
+                if (existingAssignment) {
+                  dispatch(updateAssignment(assignment));
+                } else {
+                  dispatch(addAssignment(assignment));
+                }
+                router.push(`/courses/${cid}/assignments`);
+              }}
             >
               Save
             </Button>

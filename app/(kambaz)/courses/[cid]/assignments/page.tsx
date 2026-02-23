@@ -14,13 +14,25 @@ import { BsGripVertical } from "react-icons/bs";
 import { LuClipboardPen } from "react-icons/lu";
 import { IoCaretDownOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
-import LessonControlButtons from "../modules/LessonControlButtons";
 
-import * as db from "../../../database";
+import LessonControlButtons from "./LessonControlButtons";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
+import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
+import { deleteAssignment } from "./reducer";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const { assignments } = useSelector(
+    (state: RootState) => state.assignmentsReducer,
+  );
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer as { currentUser: any },
+  );
+  const isFaculty = currentUser?.role === "FACULTY";
   return (
     <div id="wd-assignments">
       <div className="pb-2 d-flex gap-5 align-items-center">
@@ -34,18 +46,33 @@ export default function Assignments() {
           />
         </InputGroup>
         <div className="d-flex gap-3 text-nowrap">
-          <Button variant="secondary" size="lg" id="wd-add-assignment-group">
-            <div className="d-flex gap-1 align-items-center">
-              <FaPlus className="fs-6" />
-              Group
-            </div>
-          </Button>
-          <Button className="btn btn-danger" size="lg" id="wd-add-assignment">
-            <div className="d-flex gap-1 align-items-center">
-              <FaPlus className="fs-6" />
-              Assignment
-            </div>
-          </Button>
+          {isFaculty && (
+            <>
+              <Button
+                variant="secondary"
+                size="lg"
+                id="wd-add-assignment-group"
+              >
+                <div className="d-flex gap-1 align-items-center">
+                  <FaPlus className="fs-6" />
+                  Group
+                </div>
+              </Button>
+              <Button
+                className="btn btn-danger"
+                size="lg"
+                id="wd-add-assignment"
+                onClick={() =>
+                  router.push(`/courses/${cid}/assignments/${uuidv4()}`)
+                }
+              >
+                <div className="d-flex gap-1 align-items-center">
+                  <FaPlus className="fs-6" />
+                  Assignment
+                </div>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <ListGroup className="rounded-0 py-5 " id="wd-assignments">
@@ -69,7 +96,11 @@ export default function Assignments() {
                     <div className="d-flex flex-column">
                       <Link
                         className="text-dark"
-                        href={`/courses/${cid}/assignments/${assignment._id}`}
+                        href={
+                          isFaculty
+                            ? `/courses/${cid}/assignments/${assignment._id}`
+                            : ""
+                        }
                       >
                         {assignment.title}
                       </Link>
@@ -96,7 +127,12 @@ export default function Assignments() {
                         );
                       })()}
                     </div>
-                    <LessonControlButtons />
+                    <LessonControlButtons
+                      assignmentId={assignment._id}
+                      deleteAssignment={(assignmentId) => {
+                        dispatch(deleteAssignment(assignmentId));
+                      }}
+                    />
                   </ListGroupItem>
                 ))}
             </ListGroup>
