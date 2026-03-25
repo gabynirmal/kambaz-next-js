@@ -8,6 +8,7 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 import { SlMagnifier } from "react-icons/sl";
 import { BsGripVertical } from "react-icons/bs";
@@ -20,19 +21,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
-import { deleteAssignment } from "./reducer";
+import { setAssignments } from "./reducer";
+import * as client from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector(
     (state: RootState) => state.assignmentsReducer,
   );
+
   const dispatch = useDispatch();
   const router = useRouter();
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer as { currentUser: any },
   );
   const isFaculty = currentUser?.role === "FACULTY";
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsforCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  const onDeleteAssignment = async (aid: string) => {
+    await client.deleteAssignment(cid as string, aid as string);
+    dispatch(setAssignments(assignments.filter((a: any) => a._id !== aid)));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
   return (
     <div id="wd-assignments">
       <div className="pb-2 d-flex gap-5 align-items-center">
@@ -84,57 +102,51 @@ export default function Assignments() {
           </div>
           {assignments && (
             <ListGroup className="wd-assignments rounded-0">
-              {assignments
-                .filter((assignment: any) => assignment.course === cid)
-                .map((assignment: any) => (
-                  <ListGroupItem
-                    className="wd-assignment d-flex flex-row align-items-center"
-                    key={assignment._id}
-                  >
-                    <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
-                    <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
-                    <div className="d-flex flex-column">
-                      <Link
-                        className="text-dark"
-                        href={
-                          isFaculty
-                            ? `/courses/${cid}/assignments/${assignment._id}`
-                            : ""
-                        }
-                      >
-                        {assignment.title}
-                      </Link>
-                      {(() => {
-                        const dueDate = new Date(assignment.due);
-                        // Formatters for "May 27" and "11:59 PM"
-                        const dateStr = dueDate.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        });
-                        const timeStr = dueDate.toLocaleTimeString("en-US", {
-                          hour: "numeric",
-                          minute: "2-digit",
-                        });
+              {assignments.map((assignment: any) => (
+                <ListGroupItem
+                  className="wd-assignment d-flex flex-row align-items-center"
+                  key={assignment._id}
+                >
+                  <BsGripVertical className="me-2 fs-3 flex-shrink-0" />
+                  <LuClipboardPen className="me-4 fs-3 text-success flex-shrink-0" />
+                  <div className="d-flex flex-column">
+                    <Link
+                      className="text-dark"
+                      href={
+                        isFaculty
+                          ? `/courses/${cid}/assignments/${assignment._id}`
+                          : ""
+                      }
+                    >
+                      {assignment.title}
+                    </Link>
+                    {(() => {
+                      const dueDate = new Date(assignment.due);
+                      // Formatters for "May 27" and "11:59 PM"
+                      const dateStr = dueDate.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      });
+                      const timeStr = dueDate.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                      });
 
-                        return (
-                          <span className="fs-6">
-                            <span className="text-danger">
-                              Multiple Modules
-                            </span>{" "}
-                            | <strong>Due</strong> {dateStr} at {timeStr} |{" "}
-                            {assignment.points} pts
-                          </span>
-                        );
-                      })()}
-                    </div>
-                    <LessonControlButtons
-                      assignmentId={assignment._id}
-                      deleteAssignment={(assignmentId) => {
-                        dispatch(deleteAssignment(assignmentId));
-                      }}
-                    />
-                  </ListGroupItem>
-                ))}
+                      return (
+                        <span className="fs-6">
+                          <span className="text-danger">Multiple Modules</span>{" "}
+                          | <strong>Due</strong> {dateStr} at {timeStr} |{" "}
+                          {assignment.points} pts
+                        </span>
+                      );
+                    })()}
+                  </div>
+                  <LessonControlButtons
+                    assignmentId={assignment._id}
+                    deleteAssignment={() => onDeleteAssignment(assignment._id)}
+                  />
+                </ListGroupItem>
+              ))}
             </ListGroup>
           )}
         </ListGroupItem>

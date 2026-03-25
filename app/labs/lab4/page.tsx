@@ -21,7 +21,7 @@ export default function Lab4() {
 
   return (
     <Provider store={store}>
-      <div id="wd-lab3">
+      <div id="wd-lab4">
         <h2>Lab 4</h2>
         <Link href="lab4/redux">Redux Examples</Link>
         <ClickEvent />

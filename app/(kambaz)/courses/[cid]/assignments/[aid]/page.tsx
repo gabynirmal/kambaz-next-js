@@ -18,6 +18,7 @@ import { addAssignment, updateAssignment } from "../reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import { useState } from "react";
+import * as client from "../client";
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
@@ -33,11 +34,21 @@ export default function AssignmentEditor() {
       title: "New Assignment",
       description: "",
       points: 100,
-      due: "",
-      not_available_until: "",
+      due: "2024-05-13T23:59",
+      not_available_until: "2024-05-13T23:59",
       course: cid,
     },
   );
+
+  const onUpdateAssignment = async () => {
+    await client.updateAssignment(cid as string, assignment);
+    dispatch(updateAssignment(assignment));
+  };
+
+  const onCreateAssignment = async () => {
+    await client.createAssignment(cid as string, assignment);
+    dispatch(addAssignment(assignment));
+  };
 
   return (
     <Form
@@ -272,9 +283,9 @@ export default function AssignmentEditor() {
               id="wd-assignment-editor-cancel"
               onClick={() => {
                 if (existingAssignment) {
-                  dispatch(updateAssignment(assignment));
+                  onUpdateAssignment();
                 } else {
-                  dispatch(addAssignment(assignment));
+                  onCreateAssignment();
                 }
                 router.push(`/courses/${cid}/assignments`);
               }}

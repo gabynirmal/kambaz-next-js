@@ -5,8 +5,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
 import { RootState } from "../../store";
 import { Button, FormControl } from "react-bootstrap";
+import * as client from "../client";
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
+  const updateProfile = async () => {
+    const updatedProfile = await client.updateUser(profile);
+    dispatch(setCurrentUser(updatedProfile));
+  };
+
   const dispatch = useDispatch();
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer,
@@ -15,7 +21,8 @@ export default function Profile() {
     if (!currentUser) return redirect("/account/signin");
     setProfile(currentUser);
   };
-  const signout = () => {
+  const signout = async () => {
+    await client.signout();
     dispatch(setCurrentUser(null));
     redirect("/account/signin");
   };
@@ -34,6 +41,7 @@ export default function Profile() {
             onChange={(e) =>
               setProfile({ ...profile, username: e.target.value })
             }
+            placeholder="username"
           />
           <FormControl
             id="wd-password"
@@ -42,6 +50,7 @@ export default function Profile() {
             onChange={(e) =>
               setProfile({ ...profile, password: e.target.value })
             }
+            placeholder="password"
           />
           <FormControl
             id="wd-firstname"
@@ -50,6 +59,7 @@ export default function Profile() {
             onChange={(e) =>
               setProfile({ ...profile, firstName: e.target.value })
             }
+            placeholder="First"
           />
           <FormControl
             id="wd-lastname"
@@ -58,6 +68,7 @@ export default function Profile() {
             onChange={(e) =>
               setProfile({ ...profile, lastName: e.target.value })
             }
+            placeholder="Last"
           />
           <FormControl
             id="wd-dob"
@@ -71,6 +82,7 @@ export default function Profile() {
             className="mb-2"
             defaultValue={profile.email}
             onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+            placeholder="johndoe@gmail.com"
           />
           <select
             className="form-control mb-2"
@@ -84,6 +96,13 @@ export default function Profile() {
             <option value="STUDENT">Student</option>
             <option value="TA">TA</option>
           </select>
+          <button
+            onClick={updateProfile}
+            className="btn btn-primary w-100 mb-2"
+          >
+            {" "}
+            Update{" "}
+          </button>
           <Button onClick={signout} className="w-100 mb-2" id="wd-signout-btn">
             Sign out
           </Button>
