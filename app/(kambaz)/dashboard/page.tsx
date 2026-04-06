@@ -45,7 +45,7 @@ export default function Dashboard() {
   };
   const onDeleteCourse = async (courseId: string) => {
     await client.deleteCourse(courseId);
-    dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+    dispatch(setCourses(courses.filter((c) => c._id !== courseId)));
   };
   const onUpdateCourse = async () => {
     await client.updateCourse(course);
@@ -90,7 +90,7 @@ export default function Dashboard() {
             variant="primary"
             onClick={() => setIsEnrollmentsActive(!isEnrollmentsActive)}
           >
-            Enrollments
+            {isEnrollmentsActive ? "My Courses" : "All Courses"}
           </Button>
         )}
       </div>

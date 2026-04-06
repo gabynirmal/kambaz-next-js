@@ -11,15 +11,18 @@ export default function Profile() {
   const updateProfile = async () => {
     const updatedProfile = await client.updateUser(profile);
     dispatch(setCurrentUser(updatedProfile));
+    setProfile(updatedProfile);
   };
 
   const dispatch = useDispatch();
-  const { currentUser } = useSelector(
-    (state: RootState) => state.accountReducer,
-  );
-  const fetchProfile = () => {
-    if (!currentUser) return redirect("/account/signin");
-    setProfile(currentUser);
+
+  const fetchProfile = async () => {
+    try {
+      const data = await client.profile();
+      setProfile(data);
+    } catch (e) {
+      redirect("/account/signin");
+    }
   };
   const signout = async () => {
     await client.signout();
@@ -37,7 +40,7 @@ export default function Profile() {
           <FormControl
             id="wd-username"
             className="mb-2"
-            defaultValue={profile.username}
+            value={profile.username || ""}
             onChange={(e) =>
               setProfile({ ...profile, username: e.target.value })
             }
@@ -46,7 +49,7 @@ export default function Profile() {
           <FormControl
             id="wd-password"
             className="mb-2"
-            defaultValue={profile.password}
+            value={profile.password || ""}
             onChange={(e) =>
               setProfile({ ...profile, password: e.target.value })
             }
@@ -55,7 +58,7 @@ export default function Profile() {
           <FormControl
             id="wd-firstname"
             className="mb-2"
-            defaultValue={profile.firstName}
+            value={profile.firstName || ""}
             onChange={(e) =>
               setProfile({ ...profile, firstName: e.target.value })
             }
@@ -64,7 +67,7 @@ export default function Profile() {
           <FormControl
             id="wd-lastname"
             className="mb-2"
-            defaultValue={profile.lastName}
+            value={profile.lastName || ""}
             onChange={(e) =>
               setProfile({ ...profile, lastName: e.target.value })
             }
@@ -74,20 +77,20 @@ export default function Profile() {
             id="wd-dob"
             className="mb-2"
             type="date"
-            defaultValue={profile.dob}
+            value={profile.dob || ""}
             onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
           />
           <FormControl
             id="wd-email"
             className="mb-2"
-            defaultValue={profile.email}
+            value={profile.email || ""}
             onChange={(e) => setProfile({ ...profile, email: e.target.value })}
             placeholder="johndoe@gmail.com"
           />
           <select
             className="form-control mb-2"
             id="wd-role"
-            value={profile.role}
+            value={profile.role || ""}
             onChange={(e) => setProfile({ ...profile, role: e.target.value })}
           >
             <option value="USER">User</option>

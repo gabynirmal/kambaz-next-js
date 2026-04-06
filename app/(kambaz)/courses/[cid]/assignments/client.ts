@@ -3,7 +3,9 @@ const axiosWithCredentials = axios.create({ withCredentials: true });
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const COURSES_API = `${HTTP_SERVER}/api/courses`;
 export const fetchAllAssignments = async () => {
-  const { data } = await axios.get(`${HTTP_SERVER}/api/assignments`);
+  const { data } = await axiosWithCredentials.get(
+    `${HTTP_SERVER}/api/assignments`,
+  );
   return data;
 };
 
