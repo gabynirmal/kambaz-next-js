@@ -73,7 +73,16 @@ export default function TOC() {
           id="wd-github"
           target="_blank"
         >
-          GitHub
+          GitHub Next.js
+        </NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink
+          href="https://github.com/gabynirmal/kambaz-node-server-app"
+          id="wd-github"
+          target="_blank"
+        >
+          GitHub Node
         </NavLink>
       </NavItem>
     </Nav>

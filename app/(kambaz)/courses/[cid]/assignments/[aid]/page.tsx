@@ -34,6 +34,7 @@ export default function AssignmentEditor() {
       title: "New Assignment",
       description: "",
       points: 100,
+      assignmentGroup: "ASSIGNMENTS",
       due: "2024-05-13T23:59",
       not_available_until: "2024-05-13T23:59",
       course: cid,
@@ -106,12 +107,19 @@ export default function AssignmentEditor() {
             style={{ width: 1000 }}
           >
             <DropdownToggle className="text-black d-flex align-items-center justify-content-between w-100">
-              ASSIGNMENTS
+              {assignment?.assignmentGroup || "ASSIGNMENTS"}
             </DropdownToggle>
             <DropdownMenu className="w-100">
-              <DropdownItem>ASSIGNMENTS</DropdownItem>
-              <DropdownItem>QUIZZES</DropdownItem>
-              <DropdownItem>EXAMS</DropdownItem>
+              {["ASSIGNMENTS", "QUIZZES", "EXAMS"].map((group) => (
+                <DropdownItem
+                  key={group}
+                  onClick={() =>
+                    setAssignment({ ...assignment, assignmentGroup: group })
+                  }
+                >
+                  {group}
+                </DropdownItem>
+              ))}
             </DropdownMenu>
           </Dropdown>
         </div>
