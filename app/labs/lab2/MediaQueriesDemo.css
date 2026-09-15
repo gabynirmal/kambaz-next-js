@@ -1,0 +1,29 @@
+/* Default styles */
+.wd-media-queries-demo {
+  background-color: green;
+  color: white;
+}
+
+/* Style between 750px and 1000px */
+@media (min-width: 750px) and (max-width: 1000px) {
+  .wd-media-queries-demo {
+    background-color: yellow;
+    color: black;
+  }
+}
+
+/* Style between 1000px and 1250px */
+@media (min-width: 1000px) and (max-width: 1250px) {
+  .wd-media-queries-demo {
+    background-color: blue;
+    color: white;
+  }
+}
+
+/* Style for widths greater than 1250px */
+@media (min-width: 1250px) {
+  .wd-media-queries-demo {
+    background-color: red;
+    color: white;
+  }
+}
